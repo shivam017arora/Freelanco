@@ -114,6 +114,25 @@ class JobsViewDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Jobs.objects.all()
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # if job status is open make all proposals stauts to sent
+        if(serializer.validated_data['status'] == 'open'):
+            proposals = Proposals.objects.filter(job=instance)
+            for proposal in proposals:
+                proposal.status = 'sent'
+                proposal.save()
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
 
 class CompanyViewDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CompanySerialzier
@@ -226,6 +245,9 @@ class ContractsDetail(generics.RetrieveUpdateDestroyAPIView):
         serializer = self.get_serializer(instance, data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+        if(instance.freelancer_started and instance.company_started and instance.status == "awaiting_start"):
+            instance.status = "in_progress"
+            instance.save()
         if(instance.freelancer_completed and instance.company_completed):
             instance.status = "completed"
             instance.job.status = "closed"
@@ -240,3 +262,13 @@ class ContractsDetail(generics.RetrieveUpdateDestroyAPIView):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
+
+
+@api_view()
+def getApprovedProposalOfJob(request, pk):
+    job = Jobs.objects.get(job_id=pk)
+    proposal = Proposals.objects.get(job=job, status="approved")
+    if(proposal is None):
+        raise APIException("No proposal found")
+    serializer = ProposalsSerializer(proposal)
+    return Response(serializer.data)

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { context } from "../context";
 import { Link, useNavigate } from "react-router-dom";
+import ConnectWeb3 from "./ConnectWeb3";
 
 const Header = () => {
   const state = useContext(context);
@@ -91,6 +92,9 @@ const Header = () => {
             >
               Logout
             </Link>
+          </span>
+          <span>
+            <ConnectWeb3 />
           </span>
         </div>
       </div>

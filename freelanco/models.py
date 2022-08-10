@@ -93,9 +93,12 @@ class Contracts(models.Model):
     freelancer = models.ForeignKey(Freelancer, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=[(
-        'in_progress', 'In Progess'), ('completed', 'Completed'), ('revoked_by_freelancer', 'Revoked'), ('revoked_by_customer', 'Revoked')], default='in_progress')
+        'in_progress', 'In Progess'), ('deposited', 'Deposited'), ('awaiting_start', 'Awaiting'), ('completed', 'Completed'), ('revoked_by_freelancer', 'Revoked'), ('revoked_by_customer', 'Revoked')], default='in_progress')
+    company_started = models.BooleanField(default=False)
+    freelancer_started = models.BooleanField(default=False)
     freelancer_completed = models.BooleanField(default=False)
     company_completed = models.BooleanField(default=False)
+    eth_deposited = models.BooleanField(default=False)
     eth_contract_address = models.CharField(
         max_length=512, null=True, blank=True)
 

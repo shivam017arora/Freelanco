@@ -8,18 +8,24 @@ import { ContextProvider } from "../context";
 import JobPage from "./JobPage";
 import JobDetailPage from "./JobDetailPage";
 import ProfilePage from "./ProfilePage";
+import { MoralisProvider } from "react-moralis";
 
 const routes = (
   <BrowserRouter>
     <ContextProvider>
-      <Routes>
-        <Route path="/" element={<HomePage />}></Route>
-        <Route path="/login" element={<LoginPage register={false} />}></Route>
-        <Route path="/register" element={<LoginPage register={true} />}></Route>
-        <Route path="/jobs" element={<JobPage />}></Route>
-        <Route path="/jobs/:id" element={<JobDetailPage />}></Route>
-        <Route path="/profile" element={<ProfilePage />}></Route>
-      </Routes>
+      <MoralisProvider initializeOnMount={false}>
+        <Routes>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/login" element={<LoginPage register={false} />}></Route>
+          <Route
+            path="/register"
+            element={<LoginPage register={true} />}
+          ></Route>
+          <Route path="/jobs" element={<JobPage />}></Route>
+          <Route path="/jobs/:id" element={<JobDetailPage />}></Route>
+          <Route path="/profile" element={<ProfilePage />}></Route>
+        </Routes>
+      </MoralisProvider>
     </ContextProvider>
   </BrowserRouter>
 );

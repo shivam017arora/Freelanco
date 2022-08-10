@@ -1,0 +1,211 @@
+[
+  { "type": "constructor", "payable": false, "inputs": [] },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "EscrowDeposited",
+    "inputs": [
+      { "type": "uint256", "name": "_contractID", "indexed": false },
+      { "type": "address", "name": "_customer", "indexed": false },
+      { "type": "address", "name": "_freelancer", "indexed": false },
+      { "type": "uint256", "name": "_price", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "EscrowEnded",
+    "inputs": [{ "type": "uint256", "name": "_contractID", "indexed": false }]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "EscrowStarted",
+    "inputs": [
+      { "type": "uint256", "name": "_contractID", "indexed": false },
+      { "type": "address", "name": "_customer", "indexed": false },
+      { "type": "address", "name": "_freelancer", "indexed": false },
+      { "type": "uint256", "name": "_price", "indexed": false }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "confirmDelivery",
+    "constant": false,
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256", "name": "_contractID" }],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "confirmStart",
+    "constant": false,
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256", "name": "_contractID" }],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "contractCounter",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [],
+    "outputs": [{ "type": "uint256" }]
+  },
+  {
+    "type": "function",
+    "name": "contractID",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [],
+    "outputs": [{ "type": "uint256" }]
+  },
+  {
+    "type": "function",
+    "name": "customer",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256" }],
+    "outputs": [{ "type": "address" }]
+  },
+  {
+    "type": "function",
+    "name": "deposit",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256", "name": "_contractID" }],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "freelancer",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256" }],
+    "outputs": [{ "type": "address" }]
+  },
+  {
+    "type": "function",
+    "name": "getCustomer",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256", "name": "_contractID" }],
+    "outputs": [{ "type": "address" }]
+  },
+  {
+    "type": "function",
+    "name": "getFreelancer",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256", "name": "_contractID" }],
+    "outputs": [{ "type": "address" }]
+  },
+  {
+    "type": "function",
+    "name": "initContract",
+    "constant": false,
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [
+      { "type": "address", "name": "_freelancer" },
+      { "type": "uint256", "name": "_price" }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "isCustomerIn",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256" }, { "type": "address" }],
+    "outputs": [{ "type": "bool" }]
+  },
+  {
+    "type": "function",
+    "name": "isCustomerOut",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256" }, { "type": "address" }],
+    "outputs": [{ "type": "bool" }]
+  },
+  {
+    "type": "function",
+    "name": "isFreelancerIn",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256" }, { "type": "address" }],
+    "outputs": [{ "type": "bool" }]
+  },
+  {
+    "type": "function",
+    "name": "isFreelancerOut",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256" }, { "type": "address" }],
+    "outputs": [{ "type": "bool" }]
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [],
+    "outputs": [{ "type": "address" }]
+  },
+  {
+    "type": "function",
+    "name": "priceHistory",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256" }],
+    "outputs": [{ "type": "uint256" }]
+  },
+  {
+    "type": "function",
+    "name": "refundFunds",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256", "name": "_contractID" }],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "stateHistory",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "gas": 29000000,
+    "inputs": [{ "type": "uint256" }],
+    "outputs": [{ "type": "uint8" }]
+  }
+]

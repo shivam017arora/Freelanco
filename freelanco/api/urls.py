@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CategoryView, CompanyView, ListRoutes, JobsView, FreelancerView, JobsPersonalView, JobsViewDetail, CompanyViewDetail, getCompanyFromUserID, getFreelancerFromUserID, ProposalsView, ProposalsViewDetail, ContractsListCreateView, ContractsDetail
+from .views import CategoryView, CompanyView, ListRoutes, JobsView, FreelancerView, JobsPersonalView, JobsViewDetail, CompanyViewDetail, getCompanyFromUserID, getFreelancerFromUserID, ProposalsView, ProposalsViewDetail, ContractsListCreateView, ContractsDetail, getApprovedProposalOfJob
 
 urlpatterns = [
     path('', ListRoutes.as_view(), name="index"),
@@ -20,4 +20,6 @@ urlpatterns = [
          name='proposals-detail'),
     path('contracts/', ContractsListCreateView.as_view(), name='contracts-list'),
     path('contracts/<int:pk>/', ContractsDetail.as_view(), name='contracts-detail'),
+    path('jobs/proposal/<int:pk>/', getApprovedProposalOfJob,
+         name='get-approved-proposal-of-job'),
 ]
