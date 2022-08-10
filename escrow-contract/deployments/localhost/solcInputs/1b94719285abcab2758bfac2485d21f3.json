@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/MyEscrow.sol": {
+      "content": "//SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.9;\n\ncontract Escrow {\n    //State\n    address public owner;\n\n    enum State {\n        NOT_INITIATED,\n        AWAITING_START,\n        AWAITING_PAYMENT,\n        AWAITING_CONFIRMATION,\n        COMPLETED\n    }\n    uint public contractID;\n    uint public contractCounter;\n\n    mapping(uint => State) public stateHistory;\n    mapping(uint => uint) public priceHistory;\n    mapping(uint => address) public customer;\n    mapping(uint => address) public freelancer;\n\n    mapping(uint => mapping(address => bool)) public isCustomerIn;\n    mapping(uint => mapping(address => bool)) public isCustomerOut;\n\n    mapping(uint => mapping(address => bool)) public isFreelancerIn;\n    mapping(uint => mapping(address => bool)) public isFreelancerOut;\n\n    //Events\n    event EscrowStarted(\n        uint _contractID,\n        address _customer,\n        address _freelancer,\n        uint _price\n    );\n    event EscrowDeposited(\n        uint _contractID,\n        address _customer,\n        address _freelancer,\n        uint _price\n    );\n    event EscrowEnded(uint _contractID);\n\n    //Constructor\n    constructor() {\n        owner = msg.sender;\n    }\n\n    //Functions\n    function initContract(address _freelancer, uint256 _price) public {\n        require(\n            msg.sender != _freelancer,\n            \"Customer and Freelancer can't be the same\"\n        );\n        contractID = getContractID(); //should be a unique number\n        customer[contractID] = msg.sender;\n        freelancer[contractID] = _freelancer;\n        stateHistory[contractID] = State.AWAITING_START;\n        priceHistory[contractID] = _price;\n        emit EscrowStarted(contractID, msg.sender, _freelancer, _price);\n    }\n\n    function getCustomer(uint _contractID) public view returns (address) {\n        return customer[_contractID];\n    }\n\n    function getFreelancer(uint _contractID) public view returns (address) {\n        return freelancer[_contractID];\n    }\n\n    function getContractID() internal returns (uint) {\n        contractCounter += 1;\n        return contractCounter;\n    }\n\n    function confirmStart(uint _contractID) public {\n        require(\n            stateHistory[_contractID] == State.AWAITING_START,\n            \"Contract not in AWAITING_START state\"\n        );\n        if (msg.sender == customer[_contractID]) {\n            isCustomerIn[_contractID][msg.sender] = true;\n        } else if (msg.sender == freelancer[_contractID]) {\n            isFreelancerIn[_contractID][msg.sender] = true;\n        }\n        if (\n            isCustomerIn[_contractID][customer[_contractID]] &&\n            isFreelancerIn[_contractID][freelancer[_contractID]]\n        ) {\n            stateHistory[_contractID] = State.AWAITING_PAYMENT;\n        }\n    }\n\n    function deposit(uint _contractID) public payable {\n        require(\n            msg.sender == customer[_contractID],\n            \"Only the customer can perform this action.\"\n        );\n        require(\n            stateHistory[_contractID] == State.AWAITING_PAYMENT,\n            \"The escrow has been funded\"\n        );\n        require(\n            msg.value >= priceHistory[_contractID],\n            \"The amount transfered should be more than approved amount\"\n        );\n        stateHistory[_contractID] = State.AWAITING_CONFIRMATION;\n        emit EscrowDeposited(\n            _contractID,\n            customer[_contractID],\n            freelancer[_contractID],\n            priceHistory[_contractID]\n        );\n    }\n\n    function confirmDelivery(uint _contractID) public {\n        require(\n            stateHistory[_contractID] == State.AWAITING_CONFIRMATION,\n            \"The escrow can't be confirmed at this stage\"\n        );\n        if (msg.sender == customer[_contractID]) {\n            isCustomerOut[_contractID][msg.sender] = true;\n        } else if (msg.sender == freelancer[_contractID]) {\n            isFreelancerOut[_contractID][msg.sender] = true;\n        }\n        if (\n            isCustomerOut[_contractID][customer[_contractID]] &&\n            isFreelancerOut[_contractID][freelancer[_contractID]]\n        ) {\n            payable(freelancer[_contractID]).transfer(\n                priceHistory[_contractID]\n            );\n            stateHistory[_contractID] = State.COMPLETED;\n            emit EscrowEnded(_contractID);\n        }\n    }\n\n    function refundFunds(uint _contractID) public payable {\n        require(\n            (msg.sender == owner || msg.sender == freelancer[_contractID]),\n            \"This can only be performed by the owner of the contract or the freelancer\"\n        );\n        payable(customer[_contractID]).transfer(priceHistory[_contractID]);\n        stateHistory[_contractID] = State.COMPLETED;\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
