@@ -162,18 +162,18 @@ const HomePage = () => {
           <div className="card-body">
             <h5 className="card-title">{job.title}</h5>
             <p className="card-text">{job.description}</p>
-            <Link to={`jobs/${job.job_id}`} className="btn btn-secondary w-25">
+            <Link to={`jobs/${job.job_id}`} className="btn btn-outline-primary">
               View Details
             </Link>
             <button
               onClick={postContract}
-              className="btn btn-secondary w-25 ms-2"
+              className="btn btn-outline-primary ms-2"
             >
               Initiate Contract
             </button>
             <button
               onClick={makeJobOpen}
-              className="btn btn-secondary w-25 ms-2"
+              className="btn btn-outline-primary ms-2"
             >
               Delete Proposal
             </button>
@@ -246,13 +246,13 @@ const HomePage = () => {
           {proposal.status === "accepted" ? ( //accepted by customer
             <div className="flex gap-2">
               <button
-                className="btn btn-secondary w-25"
+                className="btn btn-outline-primary"
                 onClick={approveProposal}
               >
                 Approve
               </button>
               <button
-                className="btn btn-secondary w-25"
+                className="btn btn-outline-primary ms-2"
                 onClick={deleteProposal}
               >
                 Delete
@@ -414,7 +414,7 @@ const HomePage = () => {
             <p className="card-text">{contract.status}</p>
             {contract.status === "deposited" ? (
               <button
-                className="btn btn-secondary w-25"
+                className="btn btn-outline-primary"
                 onClick={markAsComplete}
               >
                 Mark as Complete
@@ -424,7 +424,10 @@ const HomePage = () => {
             )}
             {contract.status === "in_progress" &&
             user.is_freelancer === false ? (
-              <button className="btn btn-secondary w-25" onClick={depositFunds}>
+              <button
+                className="btn btn-outline-primary"
+                onClick={depositFunds}
+              >
                 Deposit Funds
               </button>
             ) : (
@@ -432,7 +435,7 @@ const HomePage = () => {
             )}
             {contract.status === "awaiting_start" ? (
               <button
-                className="btn btn-secondary w-25"
+                className="btn btn-outline-primary"
                 onClick={startContract}
               >
                 Start Contract
