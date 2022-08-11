@@ -2,6 +2,12 @@
 
 Decentralised Platform governed by Smart Contracts to make trust minimised escrow contract for hiring Freelancers from around the world!
 
+# Tech Stack
+
+1. Django: for backend functionality and saving smart contract information using event logs
+2. Hardhat: for smart-contract functionality using MetaMask
+3. React: for frontend functionality
+
 # Demo
 
 ### @CustomerView: Job Detail
